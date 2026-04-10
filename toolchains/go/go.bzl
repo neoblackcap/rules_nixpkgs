@@ -126,7 +126,7 @@ go_toolchain_func = """
 load("@{rules_go}//go:def.bzl", "go_toolchain")
 
 PLATFORMS = {PLATFORMS}
-def declare_toolchains(host_goos, host_goarch):
+def declare_toolchains(host_goos, host_goarch, pack):
     for p in PLATFORMS:
         link_flags = []
         cgo_link_flags = []
@@ -143,6 +143,7 @@ def declare_toolchains(host_goos, host_goarch):
             goarch = p.goarch,
             sdk = "@{sdk_repo}//:go_sdk",
             builder = "@{sdk_repo}//:builder",
+            pack = pack,
             link_flags = link_flags,
             cgo_link_flags = cgo_link_flags,
             visibility = ["//visibility:public"],
@@ -163,7 +164,7 @@ def declare_toolchains(host_goos, host_goarch):
 go_toolchain_build = """
 load("//:toolchain.bzl", "declare_toolchains")
 
-declare_toolchains("{goos}", "{goarch}")
+declare_toolchains("{goos}", "{goarch}", ":pack_reset")
 """
 
 def _nixpkgs_go_toolchain_impl(repository_ctx):
