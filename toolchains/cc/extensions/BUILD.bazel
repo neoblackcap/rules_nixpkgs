@@ -1,0 +1,8 @@
+"""CC 工具链 Extensions"""
+
+package(default_visibility = ["//visibility:public"])
+
+filegroup(
+    name = "extensions",
+    srcs = glob(["*.bzl"]),
+)
