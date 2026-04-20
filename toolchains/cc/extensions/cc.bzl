@@ -16,26 +16,27 @@ def _cc_toolchain_impl(module_ctx):
     """实现 CC 工具链配置"""
     root_deps = []
 
-    for tag in module_ctx.tags.configure:
-        name = tag.name
-        nixpkgs_cc_configure(
-            name = name,
-            repository = tag.repository,
-            attribute_path = tag.attribute_path or "",
-            nix_file_content = tag.nix_file_content or "",
-            nixopts = list(tag.nixopts) if tag.nixopts else [],
-            quiet = tag.quiet,
-            fail_not_supported = tag.fail_not_supported,
-            register = False,
-            cc_lang = tag.cc_lang,
-            cc_std = tag.cc_std,
-        )
+    for mod in module_ctx.modules:
+        for tag in mod.tags.configure:
+            name = tag.name
+            nixpkgs_cc_configure(
+                name = name,
+                repository = tag.repository,
+                attribute_path = tag.attribute_path or "",
+                nix_file_content = tag.nix_file_content or "",
+                nixopts = list(tag.nixopts) if tag.nixopts else [],
+                quiet = tag.quiet,
+                fail_not_supported = tag.fail_not_supported,
+                register = False,
+                cc_lang = tag.cc_lang,
+                cc_std = tag.cc_std,
+            )
 
-        root_deps.extend([
-            name,
-            "{}_info".format(name),
-            "{}_toolchains".format(name),
-        ])
+            root_deps.extend([
+                name,
+                "{}_info".format(name),
+                "{}_toolchains".format(name),
+            ])
 
     return module_ctx.extension_metadata(
         root_module_direct_deps = root_deps,
