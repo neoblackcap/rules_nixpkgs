@@ -302,6 +302,13 @@ let
         url = src.url;
         sha256 = src.narHash;
       }}
+    else if src.type == "git" then
+      fetchGit {{
+        url = src.url;
+        ref = src.ref or null;
+        rev = src.rev;
+        shallow = src.shallow or false;
+      }}
     else
       abort "Unsupported nixpkgs source type: ${{src.type}}";
 in

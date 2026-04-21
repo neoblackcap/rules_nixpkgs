@@ -2,3 +2,5 @@ import %workspace%/.bazelrc.remote-cache
 import %workspace%/.bazelrc.common
 import %workspace%/.bazelrc.cc
 import %workspace%/.bazelrc.java
+
+build --host_platform=@rules_nixpkgs_core//platforms:host
